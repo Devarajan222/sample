@@ -3,8 +3,8 @@ com\app\service\covid\CovidBonusService.class
 com\app\repository\covid\CovidCasesDescRepository.class
 com\app\controller\CovidController.class
 com\app\StartCovidApplication.class
-app\com\config\WebConfiguration.class
 com\app\service\covid\CovidBonusServiceImpl.class
+com\app\config\WebConfiguration.class
 test\LombokTest.class
 com\app\service\covid\CovidService.class
 com\app\controller\MyCovidController.class

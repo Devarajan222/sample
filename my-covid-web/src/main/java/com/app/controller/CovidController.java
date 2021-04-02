@@ -1,19 +1,21 @@
 package com.app.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.entity.CovidCasesDescEntity;
 import com.app.model.CovidCasesArea;
 import com.app.model.CovidCasesDesc;
 import com.app.repository.covid.CovidCasesDescRepository;
 import com.app.service.covid.CovidService;
+import com.app.service.covid.CovidServiceImpl;
 import com.app.service.covid.api.CovidMiningAPITotalCases;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,11 @@ public class CovidController {
 	private final static String GET_HELLO_API = "/covid/hello";
 
 	private final static String GET_LOG_API = "/covid/logging";
+	
+	private final static String PUT_API = "/covid/put";
+	private final static String DELETE_COVID_SOAPUI = "/covid/delete/soap";
+	private final static String POST_API = "/covid/post";
+	private final static String FIND_DUPLICATE_DELETE_COVID = "/covid/delete/duplicate";
 
 	@Autowired
 	private CovidService covidService;
@@ -130,10 +137,10 @@ public class CovidController {
 		CovidCasesDesc covidCasesDesc = null;
 		try {
 
-			if (desc == null || desc.equals("undefined") || desc.equals(""))  {
+			if (desc == null || desc.equals("undefined") || desc.equals("")) {
 				throw new NullPointerException(ADD_COVID + ", desc is null or empty");
 			}
-			covidCasesDesc=covidService.addCovid(desc);
+			covidCasesDesc = covidService.addCovid(desc);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			log.error("add() exception " + e.getMessage());
@@ -148,13 +155,12 @@ public class CovidController {
 	@DeleteMapping(DELETE_COVID)
 	int deleteCovid(@RequestParam(required = true) long id) throws Exception {
 		log.info("deleteCovid() started id={}", id);
-int num=0;
+		int num = 0;
 		try {
 
-	num= covidService.deleteCovid(id);
-	if(num==1)
-		return num;
-			
+			num = covidService.deleteCovid(id);
+			if (num == 1)
+				return num;
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -164,4 +170,44 @@ int num=0;
 
 		return num;
 	}
+
+	// TODO: Angular Practical 7 - Full Stack Application for Covid Put HTTP
+	@PutMapping(PUT_API)
+	CovidCasesDesc putCovid(@RequestBody CovidCasesDesc covidCasesDesc) throws Exception {
+
+		return covidService.putCovid(covidCasesDesc);
+			
+	
+	}
+	
+	// TODO: Performance Practical 2 - Performance and Functional Testing
+	@DeleteMapping(DELETE_COVID_SOAPUI)
+
+	int deleteCovidSoap(@RequestParam(required = true) String desc) throws Exception {
+		log.info("deleteCovidSoap() started desc={}", desc);
+		int num = 0;
+		try {
+
+			num = covidService.deleteCovidSoap(desc);
+			if (num == 1)
+				return num;
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			log.error("deleteCovid() exception " + e.getMessage());
+			throw new Exception(e.getMessage());
+		}
+
+		return num;
+	}
+	 @PostMapping(POST_API)
+	    public CovidCasesDesc postCovid(@RequestBody CovidCasesDesc covidCasesDesc) throws Exception {
+			
+	    	return covidService.postCovid(covidCasesDesc);
+	    	
+	    }
+	 
+
+		
+	
 }
