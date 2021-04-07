@@ -1,27 +1,26 @@
 package com.app.service.covid;
 import java.util.List;
 
-import com.app.model.CovidCasesBonus;
-
-import java.util.List;
 
 import com.app.model.CovidCasesBonus;
+
+
 
 public interface CovidBonusService {
 
-	List<CovidCasesBonus> bonus() throws Exception;
+	List<CovidCasesBonus> bonus() ;
 	
 	CovidCasesBonus addCovidBonus(String desc);
 	
-	int deleteCovidBonus(Long id) throws Exception;
+	int deleteCovidBonus(Long id) ;
 	
-	CovidCasesBonus putCovidBonus(CovidCasesBonus covidCasesBonus) throws Exception;
+	CovidCasesBonus putCovidBonus(CovidCasesBonus covidCasesBonus);
 	
-	CovidCasesBonus postCovidBonus(CovidCasesBonus covidCasesBonus) throws Exception;
+	CovidCasesBonus postCovidBonus(CovidCasesBonus covidCasesBonus) ;
 	
-	List<CovidCasesBonus> deleteCovidBonus(String desc) throws Exception;
+	List<CovidCasesBonus> deleteCovidBonus(String desc) ;
 
-	List<String> deleteDup() throws Exception;
+	List<String> deleteDup() ;
 	
 
 }

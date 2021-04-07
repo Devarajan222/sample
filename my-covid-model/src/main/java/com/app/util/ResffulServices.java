@@ -2,6 +2,7 @@ package com.app.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -12,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 
 public class ResffulServices {
 
-	public static String GetServices(String URL) throws Exception {
+	public static String GetServices(String URL) throws IOException {
 
 		URL url;
 		StringBuilder textBuilder = new StringBuilder();
@@ -34,7 +35,7 @@ public class ResffulServices {
 				urlConnection.disconnect();
 			}
 		} catch (Exception e) {
-			throw new Exception(e);
+			throw new IOException(e);
 
 		}
 

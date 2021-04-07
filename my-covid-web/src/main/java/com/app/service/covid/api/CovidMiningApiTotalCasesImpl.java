@@ -16,12 +16,11 @@ import org.springframework.stereotype.Service;
 import com.app.mapper.CovidCasesAreaMapper;
 import com.app.repository.covid.CovidCasesRepository;
 import com.app.entity.CovidCasesAreaEntity;
+import com.app.error.ControllerException;
 import com.app.model.CovidCasesArea;
 import com.app.model.api.Covid19ApiModel;
 import com.app.util.DateTools;
 import com.app.util.ResffulServices;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 
@@ -32,9 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CovidMiningApiTotalCasesImpl implements CovidMiningAPITotalCases {
 
-	private final static String URL = "https://api.covid19api.com/total/country/malaysia/status/confirmed?from=";
+	private  static final String URL = "https://api.covid19api.com/total/country/malaysia/status/confirmed?from=";
 
-	private final static String API_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+	private  static final String API_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
 	@Autowired
 	CovidCasesRepository covidCasesRepository;
@@ -100,7 +99,7 @@ public class CovidMiningApiTotalCasesImpl implements CovidMiningAPITotalCases {
 	}
 
 	private List<Covid19ApiModel> convertToObjects(String json)
-			throws JsonParseException, JsonMappingException, IOException {
+			throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 
 		CollectionType javaType = mapper.getTypeFactory().constructCollectionType(List.class, Covid19ApiModel.class);
@@ -115,7 +114,7 @@ public class CovidMiningApiTotalCasesImpl implements CovidMiningAPITotalCases {
 
 	private String getTotalCasesMYFromAPI(String defaultDate, String defaultTime, Date date1DayBefore,
 			Date date3DayBefore) throws Exception {
-		StringBuffer urlBuffer = new StringBuffer();
+		StringBuilder urlBuffer = new StringBuilder();
 
 		String stringDate1DayBefore = DateTools.getDate(defaultDate, date1DayBefore) + defaultTime;
 		String stringDate3DayBefore = DateTools.getDate(defaultDate, date3DayBefore) + defaultTime;
@@ -137,13 +136,13 @@ public class CovidMiningApiTotalCasesImpl implements CovidMiningAPITotalCases {
 	}
 
 	@Override
-	public List<CovidCasesArea> getLast5RecordsMY() throws Exception {
-		// TODO Auto-generated method stub
+	public List<CovidCasesArea> getLast5RecordsMY() throws ControllerException {
+		
 		List<CovidCasesAreaEntity> casesEntities = covidCasesRepository.listLast5RecordsHQL();
 
 		CovidCasesAreaMapper mapper = Selma.builder(CovidCasesAreaMapper.class).build();
 
-		List<CovidCasesArea> casesPojos = new ArrayList<CovidCasesArea>();
+		List<CovidCasesArea> casesPojos = new ArrayList<>();
 		for (CovidCasesAreaEntity covidCasesAreaEntity : casesEntities) {
 			CovidCasesArea covidCasesArea = mapper.asResource(covidCasesAreaEntity);
 			casesPojos.add(covidCasesArea);
@@ -154,17 +153,15 @@ public class CovidMiningApiTotalCasesImpl implements CovidMiningAPITotalCases {
 	}
 
 	@Override
-	public List<CovidCasesArea> getLast5RecordsMYWithSize(int size) throws Exception {
-		// TODO Auto-generated method stub
-
-		// TODO: Practical bonus 3:
+	public List<CovidCasesArea> getLast5RecordsMYWithSize(int size) throws ControllerException {
+	
 
 		Pageable page = PageRequest.of(0, size);
 		List<CovidCasesAreaEntity> list =
 		 covidCasesRepository.listLast5RecordsHQLWithSize(page);
 
 		// complete the code here as getLast5RecordsMY method
-		List<CovidCasesArea> casesPojos = new ArrayList<CovidCasesArea>();
+		List<CovidCasesArea> casesPojos = new ArrayList<>();
 		CovidCasesAreaMapper mapper = Selma.builder(CovidCasesAreaMapper.class).build();
 		for (CovidCasesAreaEntity covidCasesAreaEntity : list) {
 			CovidCasesArea covidCasesArea = mapper.asResource(covidCasesAreaEntity);
@@ -173,7 +170,8 @@ public class CovidMiningApiTotalCasesImpl implements CovidMiningAPITotalCases {
 
 
 		if (casesPojos.size() == 0) {
-			throw new Exception("query return nothing!");
+
+throw new com.app.error.ControllerException("Query Return nothing",null);
 		}
 		
 		log.info("getLast5RecordsMYWithSize ends.");
@@ -181,7 +179,7 @@ public class CovidMiningApiTotalCasesImpl implements CovidMiningAPITotalCases {
 	}
 	
 	@Override
-	public String getTotalfromDB() throws Exception {
+	public String getTotalfromDB() throws ControllerException {
 		log.info("getTotalfromDB starts. ");
 		List<CovidCasesAreaEntity> casesEntities = covidCasesRepository.listLast2Records();
 		log.info("getTotalfromDB casesEntities size ={} ", casesEntities.size());
@@ -190,7 +188,7 @@ public class CovidMiningApiTotalCasesImpl implements CovidMiningAPITotalCases {
 		
 		String date = "";
 		if (!casesEntities.isEmpty()) {
-			List<Covid19ApiModel> covidApiModels = new ArrayList<Covid19ApiModel>();
+			List<Covid19ApiModel> covidApiModels = new ArrayList<>();
 
 			CovidCasesAreaEntity covidCasesAreaEntity = casesEntities.get(1);
 			log.info("getTotalfromDB Last covidCasesAreaEntity date={}, cases={}", covidCasesAreaEntity.getDate(),

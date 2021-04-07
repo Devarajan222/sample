@@ -2,6 +2,7 @@ package com.app.service.covid;
 
 import java.util.List;
 
+import com.app.error.ControllerException;
 import com.app.model.CovidCasesArea;
 import com.app.model.CovidCasesDesc;
 
@@ -17,15 +18,15 @@ public interface CovidService {
 	
 	int deleteCovid(long id);
 
-	CovidCasesDesc putCovid(CovidCasesDesc covidCasesDesc) throws Exception;
+	CovidCasesDesc putCovid(CovidCasesDesc covidCasesDesc) throws ControllerException;
 
 
 
-	int deleteCovidSoap(String desc) throws Exception;
+	int deleteCovidSoap(String desc) throws ControllerException;
 
 
 
-	CovidCasesDesc postCovid(CovidCasesDesc covidCasesDesc) throws Exception;
+	CovidCasesDesc postCovid(CovidCasesDesc covidCasesDesc) throws ControllerException;
 
 
 
@@ -36,7 +37,6 @@ public interface CovidService {
 
 
 
-	//CovidCasesDesc putCovid(String desc);
 
 
 }

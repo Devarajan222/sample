@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.app.entity.CovidCasesBonusEntity;
 
-//TODO: Practical bonus final
+
 // complete this as JpaRepository
 
 // hint: interface is similar to CovidCasesDescRepository

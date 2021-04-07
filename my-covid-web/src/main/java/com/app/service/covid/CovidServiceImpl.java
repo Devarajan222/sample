@@ -6,10 +6,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 import com.app.entity.CovidCasesAreaEntity;
 import com.app.entity.CovidCasesDescEntity;
+import com.app.error.ControllerException;
 import com.app.error.IDNotFoundException;
 import com.app.mapper.CovidAreaDescMapper;
 import com.app.mapper.CovidCasesAreaMapper;
@@ -36,7 +37,7 @@ public class CovidServiceImpl implements CovidService {
 		log.info("getCovid started");
 		CovidCasesAreaMapper mapper = Selma.builder(CovidCasesAreaMapper.class).build();
 		List<CovidCasesAreaEntity> covidCaseEntities = covidCasesRepository.findAll();
-		List<CovidCasesArea> covidCasesAreaList = new ArrayList<CovidCasesArea>();
+		List<CovidCasesArea> covidCasesAreaList = new ArrayList<>();
 		if (covidCaseEntities == null) {
 			throw new IDNotFoundException(0L);
 		} else {
@@ -58,7 +59,7 @@ public class CovidServiceImpl implements CovidService {
 		log.info("getCovidDesc started");
 		CovidAreaDescMapper mapper = Selma.builder(CovidAreaDescMapper.class).build();
 		List<CovidCasesDescEntity> covidCaseDescEntities = covidCasesDescRepository.findAll();
-		List<CovidCasesDesc> covidCasesDescList = new ArrayList<CovidCasesDesc>();
+		List<CovidCasesDesc> covidCasesDescList = new ArrayList<>();
 		if (covidCaseDescEntities == null) {
 			throw new IDNotFoundException(0L);
 		} else {
@@ -75,7 +76,7 @@ public class CovidServiceImpl implements CovidService {
 
 	}
 
-	// TODO: Related to Practical 4 (Add)
+	
 	@Override
 	public CovidCasesDesc addCovid(String desc) {
 		log.info("addCovid started");
@@ -93,7 +94,7 @@ public class CovidServiceImpl implements CovidService {
 
 	}
 
-	// TODO: Related to Practical 4 (Delete)
+
 	@Override
 	public int deleteCovid(long id) {
 		log.info("deleteCovid started");
@@ -109,7 +110,7 @@ public class CovidServiceImpl implements CovidService {
 	}
 
 	@Override
-	public CovidCasesDesc putCovid(CovidCasesDesc covidCasesDesc) throws Exception {
+	public CovidCasesDesc putCovid(CovidCasesDesc covidCasesDesc) throws ControllerException {
 		log.info("putCovid started,covidCasesDesc={}", covidCasesDesc);
 		try {
 			CovidAreaDescMapper mapper = Selma.builder(CovidAreaDescMapper.class).build();
@@ -121,8 +122,8 @@ public class CovidServiceImpl implements CovidService {
 
 		} catch (Exception e) {
 			log.error("deleteCovid()exception" + e.getMessage());
-			throw new Exception(e.getMessage());
 
+throw new com.app.error.ControllerException(e.getMessage(), null);
 		}
 		log.info("putCovid()ends, covidCasesDescSaved= {}", covidCasesDesc);
 		return covidCasesDesc;
@@ -130,7 +131,7 @@ public class CovidServiceImpl implements CovidService {
 	}
 
 	@Override
-	public int deleteCovidSoap(String desc) throws Exception {
+	public int deleteCovidSoap(String desc) throws ControllerException {
 		log.info("deleteCovidSoap() started desc={}", desc);
 		int num = 0;
 
@@ -140,7 +141,7 @@ public class CovidServiceImpl implements CovidService {
 	}
 	
 	@Override
-	public CovidCasesDesc postCovid(CovidCasesDesc covidCasesDesc) throws Exception{
+	public CovidCasesDesc postCovid(CovidCasesDesc covidCasesDesc) throws ControllerException{
 		log.info("postCovid() starts, covidCasesDesc={}",covidCasesDesc);
 		try {
 			CovidAreaDescMapper mapper = Selma.builder(CovidAreaDescMapper.class).build();
@@ -149,9 +150,10 @@ public class CovidServiceImpl implements CovidService {
 	    	covidCasesDesc = mapper.asResource(savedEntity);
 			
 		}catch (Exception e) {
-			// TODO Auto-generated catch block
+		
 			log.error("deleteCovid() exception " + e.getMessage());
-			throw new Exception(e.getMessage());
+
+throw new com.app.error.ControllerException(e.getMessage(), null);
 		}
 		log.info("postCovid() end, covidCasesDesc={}",covidCasesDesc);
     	return covidCasesDesc;

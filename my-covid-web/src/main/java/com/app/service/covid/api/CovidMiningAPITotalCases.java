@@ -2,17 +2,15 @@ package com.app.service.covid.api;
 
 import java.util.List;
 
+import com.app.error.ControllerException;
 import com.app.model.CovidCasesArea;
 
 public interface CovidMiningAPITotalCases {
 
-	// String getTotalCasesMY() throws Exception;
-
-//	String doMining() throws Exception;
 	
-	List<CovidCasesArea> getLast5RecordsMY() throws Exception;
+	List<CovidCasesArea> getLast5RecordsMY() throws ControllerException;
 
-	String getTotalfromDB() throws Exception;
+	String getTotalfromDB() throws ControllerException;
 
-	List<CovidCasesArea> getLast5RecordsMYWithSize(int size) throws Exception;
+	List<CovidCasesArea> getLast5RecordsMYWithSize(int size) throws ControllerException;
 }

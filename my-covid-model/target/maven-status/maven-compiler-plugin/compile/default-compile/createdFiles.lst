@@ -1,5 +1,6 @@
 com\app\model\CovidCasesDesc.class
 com\app\mapper\CovidAreaDescMapper.class
+com\app\util\CovidDefaultConstant.class
 com\app\model\Country.class
 com\app\util\ResffulServices.class
 com\app\mapper\CovidCasesAreaMapper.class
@@ -12,9 +13,11 @@ com\app\mapper\CountryMapperSelmaGeneratedClass.class
 com\app\mapper\CovidCasesAreaMapperSelmaGeneratedClass.class
 com\app\model\CovidCasesBonus.class
 com\app\util\BayiBotDefaultConstant.class
+com\app\error\GeneralException.class
 com\app\model\Area.class
 com\app\entity\AreaEntity.class
 com\app\entity\CovidCasesCountryEntity.class
+com\app\error\ControllerException.class
 com\app\mapper\CovidAreaBonusMapperSelmaGeneratedClass.class
 com\app\mapper\CountryMapper.class
 com\app\error\IDNotFoundException.class
